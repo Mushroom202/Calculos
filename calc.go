@@ -23,15 +23,21 @@ func main() {
 	}
 	input = strings.TrimSpace(input)
 	line := strings.Split(input, " ")
-	for index, value := range line {
+	if len(line) > 3 {
+		log.Fatal("Ошибка: Больше 2 чисел или больше 1 математического действия")
+	}
+	for _, value := range line {
+		if co(line[0]) > 10 && co(line[0]) < 0 && co(line[2]) > 10 && co(line[2]) < 0 {
+			log.Fatal("Ошибка: Число меньше или больше 10")
+		}
 		if value == "+" {
-			Res = sum(co(line[index-1]), co(line[index+1]))
+			Res = sum(co(line[0]), co(line[2]))
 		} else if value == "*" {
-			Res = mn(co(line[index-1]), co(line[index+1]))
+			Res = mn(co(line[0]), co(line[2]))
 		} else if value == "/" {
-			Res = del(co(line[index-1]), co(line[index+1]))
+			Res = del(co(line[0]), co(line[2]))
 		} else if value == "-" {
-			Res = mi(co(line[index-1]), co(line[index+1]))
+			Res = mi(co(line[0]), co(line[2]))
 		}
 		_, ok := Rum[line[0]]
 		_, ok1 := Rum[line[2]]
@@ -45,8 +51,12 @@ func main() {
 		}
 	}
 	if typerum == true {
+		if Res <= 0 {
+			log.Fatal("Ошибка: для римских цифр нельзя использовать цифры меньше или равно 0")
+		}
 		if Res/10 > 0 {
 			ResRum += Rumrevten[Res/10]
+			ResRum += Rumrev[Res%10]
 		} else {
 			ResRum += Rumrev[Res%10]
 		}
